@@ -1,5 +1,6 @@
 // src/Portfolio.jsx
 import React, { useMemo, useState } from "react";
+import ChatWidget from "./components/ChatWidget.jsx";
 import { motion } from "framer-motion";
 import {
   Github,
@@ -138,6 +139,7 @@ const Tag = ({ children }) => <span className="tag">{children}</span>;
 /* ===== Page ===== */
 export default function Portfolio() {
   const [query, setQuery] = useState("");
+  const [chatOpen, setChatOpen] = useState(false); // <-- added state for chat widget
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
@@ -152,6 +154,9 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen">
+      {/* Chat widget (renders when open) */}
+      <ChatWidget open={chatOpen} onClose={() => setChatOpen(false)} />
+
       {/* Header */}
       <header className="sticky top-0 z-30 border-b border-[#262626] backdrop-blur bg-[#0f0f0f]/80">
         <div className="max-w-6xl mx-auto h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -420,15 +425,15 @@ export default function Portfolio() {
         </div>
       </footer>
 
-      {/* Sticky CTA */}
-      <a
-        href={EMAIL.gmail}
-        target="_blank"
-        rel="noreferrer"
+      {/* Sticky CTA -> opens the chat widget */}
+      <button
+        onClick={() => setChatOpen(true)}
         className="fixed bottom-6 right-6 shadow-lg px-4 py-3 rounded-full btn-primary"
+        aria-haspopup="dialog"
+        aria-expanded={chatOpen}
       >
         Hire Me
-      </a>
+      </button>
     </div>
   );
 }
