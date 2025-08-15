@@ -1,3 +1,4 @@
+// src/Portfolio.jsx
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -13,9 +14,13 @@ import {
 } from "lucide-react";
 
 /* ===== Theme ===== */
-const NAME = { text: "text-white" };                  
-const ACCENT = { text: "text-[#FF9900]", bg: "bg-[#FF9900] hover:bg-[#e68900]" }; // keep AWS orange accent
+const NAME = { text: "text-white" }; // header name color (clean + readable)
+const ACCENT = {
+  text: "text-[#FF9900]",                 // AWS orange text
+  bg: "bg-[#FF9900] hover:bg-[#e68900]",  // AWS orange button
+};
 
+/* ===== Profile ===== */
 const PROFILE = {
   name: "Bhargavi Arya Siva",
   tagline: "AI/ML Engineer • Data Scientist • Analytics Storyteller",
@@ -26,10 +31,25 @@ const PROFILE = {
   links: {
     github: "https://github.com/BhargaviArya/BhargaviArya",
     linkedin: "https://www.linkedin.com/in/bhargavi-arya-siva-897287169/",
-    resume: "resume.pdf", // make sure public/resume.pdf exists
   },
 };
 
+/* Resume URL that works locally AND on GitHub Pages */
+const RESUME_URL = import.meta.env.BASE_URL + "resume.pdf";
+
+/* Email links that work everywhere (Gmail/Outlook/mail app) */
+const EMAIL = (() => {
+  const to = PROFILE.email;
+  const subject = encodeURIComponent("Hello Bhargavi — from your portfolio");
+  const body = encodeURIComponent("Hi Bhargavi,\n\nI saw your portfolio and...");
+  return {
+    gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`,
+    outlook: `https://outlook.live.com/mail/0/deeplink/compose?to=${to}&subject=${subject}&body=${body}`,
+    mailto: `mailto:${to}?subject=${subject}&body=${body}`,
+  };
+})();
+
+/* ===== Data ===== */
 const SKILLS = [
   ["Python", "SQL", "R", "Pandas", "NumPy", "Spark"],
   ["Regression/GLM", "Tree Models", "Lasso/Ridge", "XGBoost", "NLP", "LLMs"],
@@ -100,6 +120,7 @@ const EDUCATION = [
   },
 ];
 
+/* ===== UI Bits ===== */
 const Section = ({ id, title, icon, children }) => (
   <section id={id} className="scroll-mt-24">
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -114,8 +135,10 @@ const Section = ({ id, title, icon, children }) => (
 
 const Tag = ({ children }) => <span className="tag">{children}</span>;
 
+/* ===== Page ===== */
 export default function Portfolio() {
   const [query, setQuery] = useState("");
+
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
     if (!q) return PROJECTS;
@@ -129,7 +152,7 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen">
-      {/* Sticky Header with BIG violet name */}
+      {/* Header */}
       <header className="sticky top-0 z-30 border-b border-[#262626] backdrop-blur bg-[#0f0f0f]/80">
         <div className="max-w-6xl mx-auto h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
           <a
@@ -154,10 +177,11 @@ export default function Portfolio() {
             ))}
           </nav>
           <a
-            href={PROFILE.links.resume}
+            href={RESUME_URL}
             className="btn btn-primary"
-            title="Download resume"
-            download
+            title="Open resume"
+            target="_blank"
+            rel="noreferrer"
           >
             <FileDown size={16} /> Resume
           </a>
@@ -187,11 +211,14 @@ export default function Portfolio() {
               <a className="btn btn-outline" href={PROFILE.links.linkedin} target="_blank" rel="noreferrer">
                 <Linkedin size={16} /> LinkedIn
               </a>
-              {/* Email button (works even without a form) */}
-              <a className="btn btn-primary" href={`mailto:${PROFILE.email}`}>
+
+              {/* Email buttons */}
+              <a className="btn btn-primary" href={EMAIL.gmail} target="_blank" rel="noreferrer">
                 <Mail size={16} /> Email
               </a>
-              {/* Copy fallback for machines without a default mail app */}
+              <a className="btn btn-outline" href={EMAIL.mailto}>
+                <Mail size={16} /> Open in Mail App
+              </a>
               <button
                 className="btn btn-outline"
                 onClick={() => navigator.clipboard.writeText(PROFILE.email)}
@@ -278,7 +305,7 @@ export default function Portfolio() {
                   <p className="text-sm text-[#cbd5e1] mt-1">{p.summary}</p>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {p.tags.map((t) => (
-                      <span key={t} className="tag">{t}</span>
+                      <Tag key={t}>{t}</Tag>
                     ))}
                   </div>
                 </div>
@@ -363,7 +390,7 @@ export default function Portfolio() {
               I usually respond quickly.
             </p>
             <div className="flex flex-wrap gap-3 mt-4">
-              <a href={`mailto:${PROFILE.email}`} className="btn btn-primary">
+              <a href={EMAIL.gmail} target="_blank" rel="noreferrer" className="btn btn-primary">
                 <Mail size={16} /> Email
               </a>
               <a href={PROFILE.links.linkedin} target="_blank" rel="noreferrer" className="btn btn-outline">
@@ -388,14 +415,16 @@ export default function Portfolio() {
           <div className="flex items-center gap-3">
             <a href={PROFILE.links.github} className="underline underline-offset-4">GitHub</a>
             <a href={PROFILE.links.linkedin} className="underline underline-offset-4">LinkedIn</a>
-            <a href={PROFILE.links.resume} className="underline underline-offset-4">Resume</a>
+            <a href={RESUME_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">Resume</a>
           </div>
         </div>
       </footer>
 
       {/* Sticky CTA */}
       <a
-        href={`mailto:${PROFILE.email}`}
+        href={EMAIL.gmail}
+        target="_blank"
+        rel="noreferrer"
         className="fixed bottom-6 right-6 shadow-lg px-4 py-3 rounded-full btn-primary"
       >
         Hire Me
