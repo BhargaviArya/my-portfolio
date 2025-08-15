@@ -1,0 +1,51 @@
+/* Tailwind v4 core */
+@import "tailwindcss";
+
+/* Inter font */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* Global dark theme */
+:root {
+  --aws-black: #0f0f0f;
+  --text: #ffffff;
+  --muted: #d1d5db; /* gray-300 */
+}
+
+html, body, #root {
+  height: 100%;
+  background-color: var(--aws-black);
+  color: var(--text);
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans";
+}
+
+/* utility helpers */
+a { text-decoration: none; }
+.btn {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition;
+}
+.btn-primary {
+  background: #ff9900;  /* AWS orange */
+  color: #111;
+}
+.btn-primary:hover { filter: brightness(0.95); }
+.btn-outline {
+  @apply border;
+  border-color: #3f3f46;
+  color: var(--text);
+}
+.btn-outline:hover { background: #151515; }
+.card {
+  @apply rounded-2xl border p-6;
+  border-color: #262626;
+  background: #111111;
+}
+.tag {
+  @apply text-xs md:text-sm rounded-full border px-2 py-1;
+  border-color: #2f2f2f;
+  color: #e5e7eb;
+}
+.hr {
+  @apply border-t mt-2 pt-3;
+  border-color: #262626;
+}
