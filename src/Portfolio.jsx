@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 /* ===== Theme ===== */
-const NAME = { text: "text-[#8B5CF6]" };                  // violet for your name (violet-500)
+const NAME = { text: "text-white" };                  
 const ACCENT = { text: "text-[#FF9900]", bg: "bg-[#FF9900] hover:bg-[#e68900]" }; // keep AWS orange accent
 
 const PROFILE = {
@@ -26,7 +26,7 @@ const PROFILE = {
   links: {
     github: "https://github.com/BhargaviArya/BhargaviArya",
     linkedin: "https://www.linkedin.com/in/bhargavi-arya-siva-897287169/",
-    resume: "/resume.pdf", // make sure public/resume.pdf exists
+    resume: "resume.pdf", // make sure public/resume.pdf exists
   },
 };
 
